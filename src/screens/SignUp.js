@@ -55,7 +55,7 @@ const SignUp = () => {
     <ScrollView>
       <View style={styles.containerImage}>
         <Image
-          source={require('../assets/images/logoEastick.png')}
+          source={require('../assets/images/logo-eastick.png')}
           style={styles.image}
         />
       </View>
