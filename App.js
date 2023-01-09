@@ -1,12 +1,20 @@
-import {View, Text, StyleSheet} from 'react-native';
-
-const Styles = StyleSheet.create({});
+import React from 'react';
+import SignUp from './src/screens/SignUp';
+import SignIn from './src/screens/SignIn';
+import ForgotPassword from './src/screens/ForgotPassword';
+import ResetPassword from './src/screens/ResetPassword';
+import Homepage from './src/screens/HomePage';
 
 const App = () => {
   return (
-    <View>
-      <Text>Hello World!</Text>
-    </View>
+    <>
+      {/* <SignUp /> */}
+      {/* <SignIn /> */}
+      {/* <ForgotPassword /> */}
+      {/* <ResetPassword /> */}
+      {/* <MyReactNativeForm /> */}
+      <Homepage />
+    </>
   );
 };
 

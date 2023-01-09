@@ -14,22 +14,9 @@ import YupPasword from 'yup-password';
 YupPasword(Yup);
 import Icon from 'react-native-vector-icons/Feather';
 
-const SignUp = () => {
+const ResetPassword = () => {
   // Form Validation
-  const phoneRegExpID = /^(^08)(\d{8,10})$/;
-  const SignUpSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    lastName: Yup.string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-    phoneNumber: Yup.string()
-      .matches(phoneRegExpID, 'Invalid phone number')
-      .required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
+  const ResetPasswordSchema = Yup.object().shape({
     password: Yup.string()
       .password()
       .min(8, 'Min lenght 8')
@@ -37,11 +24,15 @@ const SignUp = () => {
       .minUppercase(1, 'Min uppercase 1')
       .minSymbols(1, 'Min symbol 1')
       .minNumbers(1, 'Min number 1'),
+    confirmPassword: Yup.string().required('Required'),
   });
 
   // Show or hide password
   const [isPasswordSecure, setIspasswordSecure] = React.useState(true);
   const [iconEye, setIconEye] = React.useState(true);
+  const [isConfirmPasswordSecure, setIsConfirmpasswordSecure] =
+    React.useState(true);
+  const [iconEyeConfirm, setIconEyeConfirm] = React.useState(true);
   const showPassword = () => {
     if (iconEye === true) {
       setIspasswordSecure(false);
@@ -51,28 +42,34 @@ const SignUp = () => {
       setIconEye(true);
     }
   };
+  const showConfirmPassword = () => {
+    if (iconEyeConfirm === true) {
+      setIsConfirmpasswordSecure(false);
+      setIconEyeConfirm(false);
+    } else {
+      setIsConfirmpasswordSecure(true);
+      setIconEyeConfirm(true);
+    }
+  };
   return (
     <ScrollView>
       <View style={styles.containerImage}>
         <Image
-          source={require('../assets/images/logoEastick.png')}
+          source={require('../assets/images/bannerKarcis.png')}
           style={styles.image}
         />
       </View>
       <View style={styles.containerHead}>
-        <Text style={styles.h1}>Sign Up</Text>
-        <Text style={styles.text}>Fill your additional details</Text>
+        <Text style={styles.h1}>Set Password</Text>
+        <Text style={styles.text}>set your new password</Text>
       </View>
       <View style={styles.containerForm}>
         <Formik
           initialValues={{
-            firstName: '',
-            lastName: '',
-            phoneNumber: '',
-            email: '',
             password: '',
+            confirmPassword: '',
           }}
-          validationSchema={SignUpSchema}
+          validationSchema={ResetPasswordSchema}
           onSubmit={values => {
             console.log(values);
           }}>
@@ -85,67 +82,6 @@ const SignUp = () => {
             touched,
           }) => (
             <>
-              <View style={styles.containerInput}>
-                <Text style={styles.text}>First Name</Text>
-                <TextInput
-                  name="firstName"
-                  keyboardType="text"
-                  onChangeText={handleChange('firstName')}
-                  onBlur={handleBlur('firstName')}
-                  value={values.firstName}
-                  style={styles.input}
-                  placeholder="Write your first name"
-                />
-              </View>
-              {errors.firstName && touched.firstName ? (
-                <Text style={styles.errorText}>{errors.firstName}</Text>
-              ) : null}
-              <View style={styles.containerInput}>
-                <Text style={styles.text}>Last Name</Text>
-                <TextInput
-                  name="lastName"
-                  keyboardType="text"
-                  onChangeText={handleChange('lastName')}
-                  onBlur={handleBlur('lastName')}
-                  value={values.lastName}
-                  style={styles.input}
-                  placeholder="Write your last name"
-                />
-              </View>
-              {errors.lastName && touched.lastName ? (
-                <Text style={styles.errorText}>{errors.lastName}</Text>
-              ) : null}
-              <View style={styles.containerInput}>
-                <Text style={styles.text}>Phone Number</Text>
-                <TextInput
-                  name="phoneNumber"
-                  keyboardType="numeric"
-                  onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
-                  value={values.phoneNumber}
-                  style={styles.input}
-                  placeholder="Write your phone number"
-                />
-              </View>
-              {errors.phoneNumber && touched.phoneNumber ? (
-                <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-              ) : null}
-              <View style={styles.containerInput}>
-                <Text style={styles.text}>Email</Text>
-                <TextInput
-                  name="email"
-                  keyboardType="text"
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  autoCapitalize="none"
-                  style={styles.input}
-                  placeholder="Write your email"
-                />
-              </View>
-              {errors.email && touched.email ? (
-                <Text style={styles.errorText}>{errors.email}</Text>
-              ) : null}
               <View style={styles.containerInput}>
                 <Text style={styles.text}>Password</Text>
                 <TextInput
@@ -169,20 +105,37 @@ const SignUp = () => {
               {errors.password && touched.password ? (
                 <Text style={styles.errorText}>{errors.password}</Text>
               ) : null}
+              <View style={styles.containerInput}>
+                <Text style={styles.text}>Confirm Password</Text>
+                <TextInput
+                  name="confirmPassword"
+                  keyboardType="text"
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                  value={values.confirmPassword}
+                  secureTextEntry={isConfirmPasswordSecure ? true : false}
+                  autoCapitalize="none"
+                  style={styles.input}
+                  placeholder="Write your confirm password"
+                />
+                <Icon
+                  onPress={showConfirmPassword}
+                  name={iconEyeConfirm ? 'eye' : 'eye-off'}
+                  style={styles.icon}
+                  size={20}
+                />
+              </View>
+              {errors.confirmPassword && touched.confirmPassword ? (
+                <Text style={styles.errorText}>{errors.confirmPassword}</Text>
+              ) : null}
               <View style={styles.containerBtn}>
                 <Pressable onPress={handleSubmit} style={styles.btn}>
-                  <Text style={styles.textBtn}>Sign Up</Text>
+                  <Text style={styles.textBtn}>Submit</Text>
                 </Pressable>
               </View>
             </>
           )}
         </Formik>
-        <View style={styles.containerText2}>
-          <Text style={styles.text2}>
-            Already have account ?{' '}
-            <Text style={styles.innerText2}> Sign In</Text>
-          </Text>
-        </View>
       </View>
     </ScrollView>
   );
@@ -248,7 +201,7 @@ const styles = StyleSheet.create({
   },
   containerText2: {
     paddingHorizontal: 20,
-    marginBottom: 50,
+    marginBottom: 10,
   },
   text2: {
     textAlign: 'center',
@@ -263,4 +216,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+export default ResetPassword;
