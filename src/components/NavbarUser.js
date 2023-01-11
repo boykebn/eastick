@@ -1,8 +1,20 @@
 import React from 'react';
-import {StyleSheet, View, Text, Image, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Pressable,
+  TextInput,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {logout as logoutAction} from '../redux/reducers/auth';
 
 const NavbarUser = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [isShowMenu, setIsShowMenu] = React.useState(false);
   const showMenu = () => {
     if (isShowMenu === false) {
@@ -11,12 +23,17 @@ const NavbarUser = () => {
       setIsShowMenu(false);
     }
   };
+
+  // Logout action
+  const handleLogout = () => {
+    dispatch(logoutAction());
+  };
   return (
     <View style={styles.navbarUserWrapper}>
       <View style={styles.navbarWrapper}>
         <View style={styles.logoWrapper}>
           <Image
-            source={require('../assets/images/bannerKarcis.png')}
+            source={require('../assets/images/logo-eastick.png')}
             style={styles.logo}
           />
         </View>
@@ -46,21 +63,30 @@ const NavbarUser = () => {
               />
             </View>
             <View>
-              <View style={styles.listMenuWrapper}>
+              <Pressable
+                onPress={() => navigation.navigate('HomePage')}
+                onPressOut={() => setIsShowMenu(false)}
+                style={styles.listMenuWrapper}>
                 <Text style={styles.textListMenu}>Home</Text>
-              </View>
-              <View style={styles.listMenuWrapper}>
+              </Pressable>
+              <Pressable
+                onPress={() => navigation.navigate('ListMovie')}
+                onPressOut={() => setIsShowMenu(false)}
+                style={styles.listMenuWrapper}>
                 <Text style={styles.textListMenu}>List Movie</Text>
-              </View>
-              <View style={styles.listMenuWrapper}>
+              </Pressable>
+              <Pressable
+                onPress={() => navigation.navigate('Profile')}
+                onPressOut={() => setIsShowMenu(false)}
+                style={styles.listMenuWrapper}>
                 <Text style={styles.textListMenu}>Profile</Text>
-              </View>
-              <View style={styles.listMenuWrapper}>
+              </Pressable>
+              <Pressable onPress={handleLogout} style={styles.listMenuWrapper}>
                 <Text style={styles.textListMenu}>Logout</Text>
-              </View>
+              </Pressable>
               <View style={styles.textFooterMenuWrapper}>
                 <Text style={styles.textFooterMenu}>
-                  © 2023 Karcis. All Rights Reserved.
+                  © 2023 Eastick. All Rights Reserved.
                 </Text>
               </View>
             </View>

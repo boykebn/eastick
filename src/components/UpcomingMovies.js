@@ -8,14 +8,19 @@ import {
   Pressable,
 } from 'react-native';
 import Month from './Month';
+import {useNavigation} from '@react-navigation/native';
 
 const UpcomingMovies = () => {
+  // Navigation
+  const navigation = useNavigation();
   return (
     <>
       <View style={styles.ucomingMoviesWrapper}>
         <View style={styles.textUpcomingMoviesWrapper}>
           <Text style={styles.textUpcomingMovies1}>Upcoming Movies</Text>
-          <Text style={styles.textUpcomingMovies2}>view all</Text>
+          <Pressable onPress={() => navigation.navigate('ListMovie')}>
+            <Text style={styles.textUpcomingMovies2}>view all</Text>
+          </Pressable>
         </View>
         <Month />
         <View>

@@ -8,7 +8,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import NavbarBeforeLogin from '../components/NavbarBeforeLogin';
+import NavbarUser from '../components/NavbarUser';
 import UpcomingMovies from '../components/UpcomingMovies';
 import Footer from '../components/Footer';
 import NowShowing from '../components/NowShowingMovies';
@@ -17,7 +17,7 @@ const Homepage = () => {
   return (
     <View>
       <ScrollView stickyHeaderIndices={[0]} style={styles.wrapper}>
-        <NavbarBeforeLogin />
+        <NavbarUser />
         <View style={styles.bannerWrapper}>
           <View>
             <Text style={styles.textBanner1}>
@@ -38,7 +38,7 @@ const Homepage = () => {
           <View style={styles.joinCard}>
             <View>
               <Text style={styles.textJoin1}>Be the vanguard of the</Text>
-              <Text style={styles.textJoin2}>Moviegoers</Text>
+              <Text style={styles.textJoin2}>Eastick People</Text>
             </View>
             <View>
               <TextInput
@@ -53,7 +53,7 @@ const Homepage = () => {
             </View>
             <View>
               <Text style={styles.textJoin3}>
-                By joining you as a Tickitz member, we will always send you the
+                By joining you as a Eastick member, we will always send you the
                 latest updates via email .
               </Text>
             </View>

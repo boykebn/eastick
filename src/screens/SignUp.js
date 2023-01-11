@@ -8,11 +8,16 @@ import {
   TextInput,
   Pressable,
 } from 'react-native';
+// import {Spinner} from 'native-base';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPasword from 'yup-password';
 YupPasword(Yup);
 import Icon from 'react-native-vector-icons/Feather';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {registerAction} from '../redux/actions/auth';
+import http from '../helpers/http';
 
 const SignUp = () => {
   // Form Validation
@@ -51,6 +56,30 @@ const SignUp = () => {
       setIconEye(true);
     }
   };
+
+  // Navigation
+  const navigation = useNavigation();
+
+  // integrasi signup
+  const dispatch = useDispatch();
+
+  const [successMessage, setSuccessMessage] = React.useState(null);
+  const [errorMessage, setErrorMessage] = React.useState(null);
+
+  const RegistHandle = async form => {
+    try {
+      const response = await http().post('/auth/register', form);
+      const token = response?.data?.results;
+      setSuccessMessage(response?.data?.message);
+      setTimeout(() => {
+        dispatch(registerAction(token));
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      setErrorMessage('Register Failed. ' + error?.response?.data?.message);
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.containerImage}>
@@ -63,6 +92,21 @@ const SignUp = () => {
         <Text style={styles.h1}>Sign Up</Text>
         <Text style={styles.text}>Fill your additional details</Text>
       </View>
+      {successMessage && (
+        <>
+          <View style={styles.alertSuccess}>
+            <Icon name="alert-circle" size={20} color="black" />
+            <Text style={styles.alertMessage}>{successMessage}</Text>
+          </View>
+          {/* <Spinner style={{marginTop: 20}} size="lg" /> */}
+        </>
+      )}
+      {errorMessage && (
+        <View style={styles.alertError}>
+          <Icon name="alert-triangle" size={20} color="black" />
+          <Text style={styles.alertMessage}>{errorMessage}</Text>
+        </View>
+      )}
       <View style={styles.containerForm}>
         <Formik
           initialValues={{
@@ -74,7 +118,7 @@ const SignUp = () => {
           }}
           validationSchema={SignUpSchema}
           onSubmit={values => {
-            console.log(values);
+            RegistHandle(values);
           }}>
           {({
             handleChange,
@@ -180,7 +224,9 @@ const SignUp = () => {
         <View style={styles.containerText2}>
           <Text style={styles.text2}>
             Already have account ?{' '}
-            <Text style={styles.innerText2}> Sign In</Text>
+            <Pressable onPress={() => navigation.navigate('SignIn')}>
+              <Text style={styles.innerText2}> Sign In</Text>
+            </Pressable>
           </Text>
         </View>
       </View>
@@ -239,7 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#00005C',
+    backgroundColor: '#3C6255',
     borderRadius: 12,
   },
   textBtn: {
@@ -254,7 +300,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   innerText2: {
-    color: '#00005C',
+    color: '#3C6255',
+    textDecorationLine: 'underline',
   },
   errorText: {
     color: 'red',

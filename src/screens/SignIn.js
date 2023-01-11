@@ -14,10 +14,20 @@ import YupPasword from 'yup-password';
 YupPasword(Yup);
 import Icon from 'react-native-vector-icons/Feather';
 
+import {useDispatch} from 'react-redux';
+import {loginAction} from '../redux/reducers/auth';
+import {useNavigation} from '@react-navigation/native';
+
 const SignIn = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const loginProcess = form => {
+    dispatch(loginAction(form));
+  };
   // Form Validation
   const SignInSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Required'),
+    email: Yup.string().email('Invalid email address').required('Required'),
     password: Yup.string()
       .password()
       .min(8, 'Min lenght 8')
@@ -39,6 +49,23 @@ const SignIn = () => {
       setIconEye(true);
     }
   };
+
+  //login
+  // const [successMessage, setSuccessMessage] = React.useState(null);
+  // const [errorMessage, setErrorMessage] = React.useState(null);
+  // const login = async form => {
+  //   try {
+  //     const response = await http().post('/auth/login', form);
+  //     const token = response?.data?.results;
+  //     setSuccessMessage(response?.data?.message);
+  //     setTimeout(() => {
+  //       dispatch(loginAction(token));
+  //     }, 1000);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setErrorMessage(error?.response?.data?.message);
+  //   }
+  // };
   return (
     <ScrollView>
       <View style={styles.containerImage}>
@@ -60,9 +87,7 @@ const SignIn = () => {
             password: '',
           }}
           validationSchema={SignInSchema}
-          onSubmit={values => {
-            console.log(values);
-          }}>
+          onSubmit={loginProcess}>
           {({
             handleChange,
             handleBlur,
@@ -112,7 +137,9 @@ const SignIn = () => {
                 <Text style={styles.errorText}>{errors.password}</Text>
               ) : null}
               <View style={styles.containerBtn}>
-                <Pressable onPress={handleSubmit} style={styles.btn}>
+                <Pressable
+                  onPress={() => navigation.navigate('HomePage')}
+                  style={styles.btn}>
                   <Text style={styles.textBtn}>Sign In</Text>
                 </Pressable>
               </View>
@@ -121,14 +148,20 @@ const SignIn = () => {
         </Formik>
       </View>
       <View style={styles.containerText2}>
-        <Text style={styles.text2}>
-          Forgot your password? <Text style={styles.innerText2}>Reset now</Text>
-        </Text>
+        <Pressable onPress={() => navigation.navigate('ResetPassword')}>
+          <Text style={styles.text2}>
+            Forgot your password?{' '}
+            <Text style={styles.innerText2}>Reset now</Text>
+          </Text>
+        </Pressable>
       </View>
       <View style={styles.containerText2}>
-        <Text style={styles.text2}>
-          Don'nt have an account? <Text style={styles.innerText2}>Sign Up</Text>
-        </Text>
+        <Pressable onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.text2}>
+            Don'nt have an account?{' '}
+            <Text style={styles.innerText2}>Sign Up</Text>
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -185,7 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#00005C',
+    backgroundColor: '#3C6255',
     borderRadius: 12,
   },
   textBtn: {
@@ -200,7 +233,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   innerText2: {
-    color: '#00005C',
+    color: '#3C6255',
   },
   errorText: {
     color: 'red',

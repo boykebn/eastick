@@ -8,16 +8,22 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 const nowShow = [1, 2, 3];
 
 const NowShowing = () => {
+  // Navigation
+  const navigation = useNavigation();
+
   const [selectedMovie, setSelectedMovie] = React.useState(null);
   return (
     <View style={styles.wrapper}>
       <View style={styles.nowShowingWrapper}>
         <View style={styles.textNowShowingWrapper}>
           <Text style={styles.textNowShowing1}>Now Showing</Text>
-          <Text style={styles.textNowShowing2}>view all</Text>
+          <Pressable onPress={() => navigation.navigate('ListMovie')}>
+            <Text style={styles.textNowShowing2}>view all</Text>
+          </Pressable>
         </View>
       </View>
       <View style={styles.listNowShowingWrapper}>
@@ -59,7 +65,9 @@ const NowShowing = () => {
                     <Text style={styles.textGenre}>
                       Action, Adventure, Sci-fi
                     </Text>
-                    <Pressable style={styles.btnDetails}>
+                    <Pressable
+                      style={styles.btnDetails}
+                      onPress={() => navigation.navigate('MovieDetail')}>
                       <Text style={styles.textBtnDetails}>Details</Text>
                     </Pressable>
                   </View>

@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
-    backgroundColor: '#00005C',
+    backgroundColor: '#3C6255',
     borderRadius: 12,
   },
   textBtn: {
