@@ -17,10 +17,16 @@ import Navbar from '../components/NavbarUser';
 import Footer from '../components/Footer';
 import {Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 
-const MovieDetail = () => {
+const MovieDetail = ({idMovie}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+
+  const route = useRoute();
+
+  const getId = route.params.idMovie;
+  console.log(getId);
 
   const navigation = useNavigation();
   return (

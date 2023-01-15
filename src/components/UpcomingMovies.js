@@ -1,18 +1,28 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  Pressable,
-} from 'react-native';
+import {View, Text, ScrollView, Image, Pressable} from 'native-base';
+import {StyleSheet} from 'react-native';
 import Month from './Month';
 import {useNavigation} from '@react-navigation/native';
+import http from '../helpers/http';
 
 const UpcomingMovies = () => {
   // Navigation
   const navigation = useNavigation();
+
+  //get data Up Coming Movies
+  const [upcomingMovie, setUpComingMovie] = React.useState([]);
+  // console.log(upcomingMovie);
+  const getDataUpcoming = async () => {
+    try {
+      const response = await http().get('/movies/upcoming');
+      setUpComingMovie(response?.data?.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    getDataUpcoming();
+  }, []);
   return (
     <>
       <View style={styles.ucomingMoviesWrapper}>
@@ -25,45 +35,35 @@ const UpcomingMovies = () => {
         <Month />
         <View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.upcomingMovie}>
-              <Image
-                source={require('../assets/images/tenet.png')}
-                style={styles.imageUpcomingMovie}
-              />
-              <View style={styles.detailsWrapper}>
-                <Text style={styles.textTitle}>Tenet</Text>
-                <Text style={styles.textGenre}>Action, Adventure, Sci-fi</Text>
-                <Pressable style={styles.btnDetails}>
-                  <Text style={styles.textBtnDetails}>Details</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={styles.upcomingMovie}>
-              <Image
-                source={require('../assets/images/tenet.png')}
-                style={styles.imageUpcomingMovie}
-              />
-              <View style={styles.detailsWrapper}>
-                <Text style={styles.textTitle}>Tenet</Text>
-                <Text style={styles.textGenre}>Action, Adventure, Sci-fi</Text>
-                <Pressable style={styles.btnDetails}>
-                  <Text style={styles.textBtnDetails}>Details</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={styles.upcomingMovie}>
-              <Image
-                source={require('../assets/images/tenet.png')}
-                style={styles.imageUpcomingMovie}
-              />
-              <View style={styles.detailsWrapper}>
-                <Text style={styles.textTitle}>Tenet</Text>
-                <Text style={styles.textGenre}>Action, Adventure, Sci-fi</Text>
-                <Pressable style={styles.btnDetails}>
-                  <Text style={styles.textBtnDetails}>Details</Text>
-                </Pressable>
-              </View>
-            </View>
+            {upcomingMovie.map(movie => {
+              return (
+                <View key={movie.id}>
+                  <View style={styles.upcomingMovie}>
+                    <Image
+                      source={{uri: movie?.pictures}}
+                      // style={styles.imageUpcomingMovie}
+                      alt="upcoming pictures"
+                      width="160px"
+                      height="250px"
+                      resizeMode="contain"
+                    />
+                    <View style={styles.detailsWrapper}>
+                      <Text style={styles.textTitle}>{movie?.movieTitle}</Text>
+                      <Text style={styles.textGenre}>{movie?.genre}</Text>
+                      <Pressable
+                        style={styles.btnDetails}
+                        onPress={() =>
+                          navigation.navigate('MovieDetail', {
+                            idMovie: movie?.id,
+                          })
+                        }>
+                        <Text style={styles.textBtnDetails}>Details</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              );
+            })}
           </ScrollView>
         </View>
       </View>

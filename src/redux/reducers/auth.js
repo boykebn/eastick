@@ -3,37 +3,60 @@ import {loginAction, registerAction} from '../actions/auth';
 
 const initialState = {
   token: null,
+  isLoading: true,
+  message: '',
 };
 
 const authReducer = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: (state, action) => {
-      // console.log(action);
-      state.token = action.payload.token;
-    },
+    // login: (state, action) => {
+    //   // console.log(action);
+    //   state.token = action.payload.token;
+    // },
     logout: (state, action) => {
-      state.token = null;
+      return initialState;
     },
   },
   extraReducers: build => {
-    build.addCase(loginAction.pending, (state, action) => {
-      state.loading = true;
+    build.addCase(loginAction.pending, (state, {payload}) => {
+      state.isLoading = false;
     });
-    build.addCase(loginAction.fulfilled, (state, action) => {
-      // console.log(action)
-      state.token = action.payload.token;
-      state.loading = false;
-      state.error = null;
+
+    build.addCase(loginAction.fulfilled, (state, {payload}) => {
+      console.log('masuk');
+      state.token = payload.results.token;
+      state.isLoading = true;
+      state.message = payload.message;
+      console.log(state.message);
     });
+
     build.addCase(loginAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.token = null;
+      state.isLoading = true;
+      state.message = action.error.message;
+    });
+
+    build.addCase(registerAction.pending, (state, {payload}) => {
+      state.isLoading = false;
+    });
+
+    build.addCase(registerAction.fulfilled, (state, {payload}) => {
+      // console.log(action)
+      state.token = payload.results.token;
+      state.isLoading = true;
+      state.message = '';
+    });
+
+    build.addCase(registerAction.rejected, (state, action) => {
+      state.token = null;
+      state.isLoading = true;
+      state.message = action.error.message;
     });
   },
 });
 
-export const {login, logout} = authReducer.actions;
+export const {logout: logoutAction} = authReducer.actions;
 
 export default authReducer.reducer;

@@ -5,8 +5,9 @@ import {NativeBaseProvider} from 'native-base';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 
-import SignUp from './SignUp';
-import SignIn from './SignIn';
+
+import Register from './Register';
+import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
 import HomePage from './HomePage';
@@ -30,13 +31,13 @@ const Main = () => {
           {!token && (
             <>
               <Stack.Screen
-                name="SignIn"
-                component={SignIn}
+                name="Login"
+                component={Login}
                 options={{headerShown: false}}
               />
               <Stack.Screen
-                name="SignUp"
-                component={SignUp}
+                name="Register"
+                component={Register}
                 options={{headerShown: false}}
               />
               <Stack.Screen
@@ -46,51 +47,51 @@ const Main = () => {
               />
             </>
           )}
-          {/* {token && ( */}
-          <>
-            <Stack.Screen
-              name="HomePage"
-              component={HomePage}
-              options={{headerShown: false}}
-            />
+          {token && (
+            <>
+              <Stack.Screen
+                name="HomePage"
+                component={HomePage}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="ListMovie"
-              component={ListMovie}
-              options={{headerShown: false}}
-            />
+              <Stack.Screen
+                name="ListMovie"
+                component={ListMovie}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="Profile"
-              component={Profile}
-              options={{headerShown: false}}
-            />
+              <Stack.Screen
+                name="Profile"
+                component={Profile}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="MovieDetail"
-              component={MovieDetail}
-              options={{headerShown: false}}
-            />
+              <Stack.Screen
+                name="MovieDetail"
+                component={MovieDetail}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="Order"
-              component={Order}
-              options={{headerShown: false}}
-            />
+              <Stack.Screen
+                name="Order"
+                component={Order}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="Payment"
-              component={Payment}
-              options={{headerShown: false}}
-            />
+              <Stack.Screen
+                name="Payment"
+                component={Payment}
+                options={{headerShown: false}}
+              />
 
-            <Stack.Screen
-              name="History"
-              component={History}
-              options={{headerShown: false}}
-            />
-          </>
-          {/* )} */}
+              <Stack.Screen
+                name="History"
+                component={History}
+                options={{headerShown: false}}
+              />
+            </>
+          )}
         </Stack.Navigator>
         {/* <SignUp /> */}
         {/* <SignIn /> */}
@@ -104,6 +105,8 @@ const Main = () => {
         {/* <Profile /> */}
         {/* <History /> */}
         {/* <TicketResult /> */}
+        {/* <Register /> */}
+        {/* <Login /> */}
       </NativeBaseProvider>
     </NavigationContainer>
   );

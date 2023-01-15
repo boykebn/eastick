@@ -1,19 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  Image,
-  Text,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {View, ScrollView, Image, Text, Pressable} from 'native-base';
+import {StyleSheet} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-const nowShow = [1, 2, 3];
+import {useDispatch} from 'react-redux';
+import http from '../helpers/http';
 
 const NowShowing = () => {
   // Navigation
   const navigation = useNavigation();
+
+  //get data Movie Now Showing
+  const dispatch = useDispatch();
+
+  const [nowShowingMovies, setNowShowingMovies] = React.useState([]);
+  // console.log(nowShowingMovies[0].pictures);
+  const getDataNowShowing = async () => {
+    try {
+      const response = await http().get('/movies/nowShowing');
+      setNowShowingMovies(response?.data?.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  React.useEffect(() => {
+    getDataNowShowing();
+  }, []);
 
   const [selectedMovie, setSelectedMovie] = React.useState(null);
   return (
@@ -28,46 +40,51 @@ const NowShowing = () => {
       </View>
       <View style={styles.listNowShowingWrapper}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          {nowShow.map((movie, index) => {
+          {nowShowingMovies.map(movie => {
             return (
-              <View>
+              <View key={movie.id}>
                 <Pressable
-                  onPress={() => setSelectedMovie(index)}
+                  onPress={() => setSelectedMovie(movie.id)}
                   style={{
-                    borderColor: selectedMovie === index ? '#DEDEDE' : 'white',
+                    borderColor:
+                      selectedMovie === movie.id ? '#DEDEDE' : 'white',
                     backgroundColor:
-                      selectedMovie === index ? 'white' : '#D6D8E7',
+                      selectedMovie === movie.id ? 'white' : '#D6D8E7',
                     borderTopWidth: 1,
                     borderLeftWidth: 1,
                     borderRightWidth: 1,
-                    borderBottomWidth: selectedMovie === index ? 0 : 1,
+                    borderBottomWidth: selectedMovie === movie.id ? 0 : 1,
                     width: 165,
                     marginRight: 16,
                     paddingHorizontal: 10,
                     borderTopStartRadius: 6,
                     borderTopEndRadius: 6,
-                    borderBottomStartRadius: selectedMovie === index ? 0 : 6,
-                    borderBottomEndRadius: selectedMovie === index ? 0 : 6,
+                    borderBottomStartRadius: selectedMovie === movie.id ? 0 : 6,
+                    borderBottomEndRadius: selectedMovie === movie.id ? 0 : 6,
                   }}>
                   <Image
-                    source={require('../assets/images/spiderman.png')}
-                    style={styles.imageNowShowing}
+                    source={{uri: movie?.pictures}}
+                    // style={styles.imageNowShowing}
+                    alt="movie pictures"
+                    width="160px"
+                    height="250px"
+                    resizeMode="contain"
                   />
                 </Pressable>
-                {selectedMovie === index ? (
+                {selectedMovie === movie.id ? (
                   <View style={styles.detailsWrapper}>
                     <Text
                       style={styles.textTitle}
                       numberOfLines={1}
                       ellipsizeMode="tail">
-                      Spiderman: Homecoming
+                      {movie?.movieTitle}
                     </Text>
-                    <Text style={styles.textGenre}>
-                      Action, Adventure, Sci-fi
-                    </Text>
+                    <Text style={styles.textGenre}>{movie?.genre}</Text>
                     <Pressable
                       style={styles.btnDetails}
-                      onPress={() => navigation.navigate('MovieDetail')}>
+                      onPress={() =>
+                        navigation.navigate('MovieDetail', {idMovie: movie.id})
+                      }>
                       <Text style={styles.textBtnDetails}>Details</Text>
                     </Pressable>
                   </View>
@@ -120,7 +137,8 @@ const styles = StyleSheet.create({
   },
   imageNowShowing: {
     resizeMode: 'contain',
-    width: '100%',
+    width: '160px',
+    height: '250px',
   },
   detailsWrapper: {
     alignItems: 'center',

@@ -2,36 +2,36 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import http from '../../helpers/http';
 
 export const loginAction = createAsyncThunk(
-  'auth/loginAction',
-  async ({email, password, cb}) => {
+  'auth/loginAsync',
+  async ({value}) => {
     try {
-      const {data} = await http().post('/auth/login', {email, password});
-      cb();
-      return data.result;
-    } catch (error) {
-      return error.response.data.message;
+      const form = {
+        email: value.email,
+        password: value.password,
+      };
+      const {data} = await http().post('/auth/login', form);
+      return data;
+    } catch (err) {
+      throw err.response.data.message;
     }
   },
 );
 
 export const registerAction = createAsyncThunk(
-  'auth/registerAction',
-  async ({firstName, lastName, email, password, phoneNUm, cb}) => {
+  'auth/registerAsync',
+  async ({value}) => {
     try {
-      console.log('masuk nih');
-      const data = await http().post('/auth/register', {
-        firstName,
-        lastName,
-        phoneNUm,
-        email,
-        password,
-      });
-      cb();
-      console.log('nahkan udah masuk');
-      return data.results;
-    } catch (error) {
-      console.log(error.response.data.message);
-      return error.response.data.message;
+      const form = {
+        firstName: value.firstName,
+        lastName: value.lastName,
+        phoneNUmber: value.phoneNUmber,
+        email: value.email,
+        password: value.password,
+      };
+      const {data} = await http().post('/auth/register', form);
+      return data;
+    } catch (err) {
+      throw err.response.data.message;
     }
   },
 );

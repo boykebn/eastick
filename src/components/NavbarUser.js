@@ -10,7 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {logout as logoutAction} from '../redux/reducers/auth';
+import {logoutAction} from '../redux/reducers/auth';
 
 const NavbarUser = () => {
   const dispatch = useDispatch();
