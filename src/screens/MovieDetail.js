@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Text,
   Box,
@@ -18,17 +19,34 @@ import Footer from '../components/Footer';
 import {Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {useRoute} from '@react-navigation/native';
+import http from '../helpers/http';
 
 const MovieDetail = ({idMovie}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
 
   const route = useRoute();
+  const navigation = useNavigation();
 
   const getId = route.params.idMovie;
   console.log(getId);
 
-  const navigation = useNavigation();
+  //fethcing movie by id
+  const [movieId, setMovieId] = React.useState({});
+  const getMovieById = async () => {
+    try {
+      const response = await http().get(`/movies/${getId}`);
+      setMovieId(response?.data?.results);
+    } catch (error) {
+      if (error) {
+        console.log(error);
+      }
+    }
+  };
+  React.useEffect(() => {
+    getMovieById();
+  }, []);
+
   return (
     <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true}>
       <Navbar />
@@ -40,7 +58,7 @@ const MovieDetail = ({idMovie}) => {
           borderColor="#DEDEDE"
           marginY="5">
           <Image
-            source={require('../assets/images/spiderman.png')}
+            source={{uri: movieId?.pictures}}
             alt="Spiderman"
             width="200"
             height="300"
@@ -50,10 +68,10 @@ const MovieDetail = ({idMovie}) => {
         {/* DETAILS MOVIE */}
         <VStack space="2">
           <Text fontSize="2xl" fontWeight="bold" textAlign="center">
-            Spider-Man: Homecoming
+            {movieId?.movieTitle}
           </Text>
           <Text fontWeight="normal" color="#4E4B66" textAlign="center">
-            Adventure, Action, Sci-Fi
+            {movieId?.genre}
           </Text>
         </VStack>
       </VStack>
@@ -65,7 +83,7 @@ const MovieDetail = ({idMovie}) => {
                 Relase date
               </Text>
               <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
-                June 28, 2017
+                {movieId?.releaseDate}
               </Text>
             </VStack>
             <VStack space="2">
@@ -73,7 +91,7 @@ const MovieDetail = ({idMovie}) => {
                 Duration
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                2 hrs 13 min
+                {movieId?.duration}
               </Text>
             </VStack>
           </VStack>
@@ -83,7 +101,7 @@ const MovieDetail = ({idMovie}) => {
                 Directed by
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                Jon Watss
+                {movieId?.director}
               </Text>
             </VStack>
             <VStack space="2">
@@ -91,7 +109,7 @@ const MovieDetail = ({idMovie}) => {
                 Casts
               </Text>
               <Text fontWeight="600" fontSize="lg" flexWrap="wrap">
-                Tom Holland, Robert Downey Jr..etc.
+                {movieId?.casts}
               </Text>
             </VStack>
           </VStack>
@@ -101,15 +119,7 @@ const MovieDetail = ({idMovie}) => {
           <Text fontWeight="bold" fontSize="lg">
             Synopsis
           </Text>
-          <Text color="#4E4B66">
-            Thrilled by his experience with the Avengers, Peter returns home,
-            where he lives with his Aunt May, under the watchful eye of his new
-            mentor Tony Stark, Peter tries to fall back into his normal daily
-            routine - distracted by thoughts of proving himself to be more than
-            just your friendly neighborhood Spider-Man - but when the Vulture
-            emerges as a new villain, everything that Peter holds most important
-            will be threatened.{' '}
-          </Text>
+          <Text color="#4E4B66">{movieId?.synopsis} </Text>
         </VStack>
       </VStack>
       {/* Showtimes and Tickets */}

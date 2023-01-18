@@ -11,8 +11,11 @@ import {
 import React, {Component} from 'react';
 import Navbar from '../components/NavbarUser';
 import Footer from '../components/Footer';
+import {useNavigation} from '@react-navigation/native';
+import {Pressable} from 'react-native';
 
 const History = () => {
+  const navigation = useNavigation();
   return (
     <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={false}>
       <Navbar />
@@ -22,9 +25,12 @@ const History = () => {
           bg="#A6BB8D"
           p="5"
           borderBottomRadius="20">
-          <Text color="gray.400" fontWeight="bold" fontSize="lg">
-            Details Account
-          </Text>
+          <Pressable onPress={() => navigation.navigate('Profile')}>
+            <Text color="gray.400" fontWeight="bold" fontSize="lg">
+              Details Account
+            </Text>
+          </Pressable>
+
           <Text
             color="white"
             fontWeight="bold"

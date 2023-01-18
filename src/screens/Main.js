@@ -5,7 +5,6 @@ import {NativeBaseProvider} from 'native-base';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 
-
 import Register from './Register';
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';
@@ -35,11 +34,19 @@ const Main = () => {
                 component={Login}
                 options={{headerShown: false}}
               />
+
               <Stack.Screen
                 name="Register"
                 component={Register}
                 options={{headerShown: false}}
               />
+
+              <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
+                options={{headerShown: false}}
+              />
+
               <Stack.Screen
                 name="ResetPassword"
                 component={ResetPassword}
@@ -88,6 +95,12 @@ const Main = () => {
               <Stack.Screen
                 name="History"
                 component={History}
+                options={{headerShown: false}}
+              />
+
+              <Stack.Screen
+                name="TicketResult"
+                component={TicketResult}
                 options={{headerShown: false}}
               />
             </>

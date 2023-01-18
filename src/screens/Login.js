@@ -18,6 +18,7 @@ import YupPasword from 'yup-password';
 YupPasword(Yup);
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {loginAction} from '../redux/actions/auth';
 
 // Validation Schema
@@ -34,6 +35,8 @@ const LoginSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const navigation = useNavigation();
+
   const [show, setShow] = React.useState(false);
   const message = useSelector(state => state?.auth?.message);
   const isLoading = useSelector(state => state.auth.isLoading);
@@ -160,7 +163,28 @@ const Login = () => {
                 isLoading={!isLoading}>
                 Sign In
               </Button>
-              <Text textAlign="center">Don't have account? Sign Up</Text>
+
+              <View style={{flex: 1, alignItems: 'center', marginTop: 15}}>
+                <Text style={{fontSize: 15}}>
+                  Forgot your password?{' '}
+                  <Text
+                    style={{color: '#1b30cf', textDecorationLine: 'underline'}}
+                    onPress={() => navigation.navigate('ForgotPassword')}>
+                    Reset now
+                  </Text>
+                </Text>
+              </View>
+
+              <View style={{flex: 1, alignItems: 'center', marginTop: 10}}>
+                <Text style={{fontSize: 15}}>
+                  Don't have an account?{' '}
+                  <Text
+                    style={{color: '#1b30cf', textDecorationLine: 'underline'}}
+                    onPress={() => navigation.navigate('Register')}>
+                    Sign Up
+                  </Text>
+                </Text>
+              </View>
             </Stack>
           </Stack>
         )}
