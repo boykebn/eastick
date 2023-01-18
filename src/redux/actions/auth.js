@@ -24,7 +24,7 @@ export const registerAction = createAsyncThunk(
       const form = {
         firstName: value.firstName,
         lastName: value.lastName,
-        phoneNUmber: value.phoneNUmber,
+        phoneNUm: value.phoneNUm,
         email: value.email,
         password: value.password,
       };

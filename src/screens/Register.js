@@ -25,7 +25,7 @@ import {registerAction} from '../redux/actions/auth';
 const RegistSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),
   lastName: Yup.string().required('Required'),
-  phoneNumber: Yup.string().required('Required'),
+  phoneNUm: Yup.string().required('Required'),
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string()
     .password()
@@ -83,7 +83,7 @@ const Register = () => {
         initialValues={{
           firstName: '',
           lastName: '',
-          phoneNumber: '',
+          phoneNUm: '',
           email: '',
           password: '',
         }}
@@ -144,15 +144,15 @@ const Register = () => {
                 )}
               </Stack>
             </FormControl>
-            <FormControl isInvalid={errors.phoneNumber && touched.phoneNumber}>
+            <FormControl isInvalid={errors.phoneNUm && touched.phoneNUm}>
               <Stack>
                 <FormControl.Label fontSize={15}>
                   Phone Number
                 </FormControl.Label>
                 <Input
-                  onChangeText={handleChange('phoneNumber')}
-                  onBlur={handleBlur('phoneNumber')}
-                  value={values.phoneNumber}
+                  onChangeText={handleChange('phoneNUm')}
+                  onBlur={handleBlur('phoneNUm')}
+                  value={values.phoneNUm}
                   variant="outline"
                   p={2}
                   placeholder="Write your phone number"
@@ -160,12 +160,12 @@ const Register = () => {
                   fontSize={15}
                   keyboardType="number-pad"
                 />
-                {errors.phoneNumber && (
+                {errors.phoneNUm && (
                   <FormControl.ErrorMessage
                     leftIcon={
                       <Icon name="alert-circle" size={18} color="red" />
                     }>
-                    {errors.phoneNumber}
+                    {errors.phoneNUm}
                   </FormControl.ErrorMessage>
                 )}
               </Stack>
