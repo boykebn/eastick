@@ -266,7 +266,7 @@ const ResetPassword = ({route}) => {
                       onPress={handleSubmit}
                       // isLoading={!isLoading}
                     >
-                      Sign In
+                      Submit
                     </Button>
                   </Stack>
                 </FormControl>
