@@ -268,6 +268,7 @@ const Profile = () => {
                 borderX="0"
                 borderRadius="10"
                 width="243"
+                keyboardType="number"
               />
             </HStack>
           </VStack>

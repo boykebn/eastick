@@ -1,7 +1,8 @@
 # OSX
 #
 .DS_Store
-
+# dotenv environment variable files
+.env
 # Xcode
 #
 build/
