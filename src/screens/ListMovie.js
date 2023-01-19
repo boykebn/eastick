@@ -12,6 +12,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  CheckIcon,
 } from 'native-base';
 import NavbarUser from '../components/NavbarUser';
 import Month from '../components/Month';
@@ -19,37 +20,33 @@ import Footer from '../components/Footer';
 import http from '../helpers/http';
 
 const ListMovie = () => {
-  const [sort, setSort] = React.useState('');
   // const [page, setPage] = React.useState(1);
 
-  // const increamentPage = () => {
-  //   if (page >= 1) {
-  //     setPage(page + 1);
-  //   } else {
-  //     setPage(page);
-  //   }
-  // };
-  // const decreamentPage = () => {
-  //   if (page > 1) {
-  //     setPage(page - 1);
-  //   } else {
-  //     setPage(page);
-  //   }
-  // };
+  const nextPage = () => {
+    setPage(page + 1);
+  };
+  const prevPage = () => {
+    setPage(page - 1);
+  };
 
   const [listMovie, setListMovie] = React.useState([]);
-  console.log(listMovie);
-  const getDataListMovie = async () => {
-    try {
-      const response = await http().get('/movies');
-      setListMovie(response?.data?.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const [page, setPage] = React.useState(1);
+  const [sort, setSort] = React.useState('');
+  const [search, setSearch] = React.useState('');
+
   React.useEffect(() => {
+    const getDataListMovie = async () => {
+      try {
+        const response = await http().get(
+          `/movies?page=${page}&limit=2&sort=${sort}&sortBy=title&search=${search}`,
+        );
+        setListMovie(response?.data?.results);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     getDataListMovie();
-  }, []);
+  }, [page, sort, search]);
   return (
     <NativeBaseProvider>
       <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true}>
@@ -67,17 +64,18 @@ const ListMovie = () => {
                 accessibilityLabel="Choose Service"
                 placeholder="Sort"
                 fontSize="14"
-                borderRadius="16">
-                <Select.Item label="ASC" value="ASC">
-                  ASC
-                </Select.Item>
-                <Select.Item label="DESC" value="DESC">
-                  DESC
-                </Select.Item>
+                borderRadius="16"
+                _selectedItem={{
+                  bg: 'teal.600',
+                  endIcon: <CheckIcon size={5} />,
+                }}>
+                <Select.Item label="A-Z" value="ASC" />
+                <Select.Item label="Z-A" value="DESC" />
               </Select>
             </Box>
             <Box>
               <Input
+                onChangeText={value => setSearch(value)}
                 mx="3"
                 placeholder="Search Movie Name"
                 w="225"
@@ -92,7 +90,7 @@ const ListMovie = () => {
           <Box
             // display="flex"
             flexDirection="row"
-            flexWrap="wrap"
+            // flexWrap="wrap"
             justifyContent="center">
             {listMovie.map(movie => {
               return (
@@ -141,19 +139,36 @@ const ListMovie = () => {
               );
             })}
           </Box>
-          {/* <HStack space={3} justifyContent="center">
-            <Pressable
-              onPress={decreamentPage}
-              borderWidth="1"
-              borderRadius="8"
-              borderColor="#3C6255"
-              backgroundColor="#3C6255"
-              w="35px"
-              h="35px"
-              justifyContent="center"
-              alignItems="center">
-              <Icon name="chevron-left" size={20} color="white" />
-            </Pressable>
+          <HStack space={3} justifyContent="center">
+            {page > 1 ? (
+              <Pressable
+                onPress={prevPage}
+                borderWidth="1"
+                borderRadius="8"
+                borderColor="#3C6255"
+                backgroundColor="#3C6255"
+                w="35px"
+                h="35px"
+                justifyContent="center"
+                alignItems="center">
+                <Icon name="chevron-left" size={20} color="white" />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={prevPage}
+                borderWidth="1"
+                borderRadius="8"
+                borderColor="#3C6255"
+                bgColor="#aaaa"
+                isDisabled={true}
+                w="35px"
+                h="35px"
+                justifyContent="center"
+                alignItems="center">
+                <Icon name="chevron-left" size={20} color="white" />
+              </Pressable>
+            )}
+
             <Pressable
               borderWidth="1"
               borderRadius="8"
@@ -166,19 +181,38 @@ const ListMovie = () => {
                 {page}
               </Text>
             </Pressable>
-            <Pressable
-              onPress={increamentPage}
-              borderWidth="1"
-              borderRadius="8"
-              borderColor="#3C6255"
-              backgroundColor="#3C6255"
-              w="35px"
-              h="35px"
-              justifyContent="center"
-              alignItems="center">
-              <Icon name="chevron-right" size={20} color="white" />
-            </Pressable>
-          </HStack> */}
+
+            {page < 5 ? (
+              <Pressable
+                onPress={nextPage}
+                // isDisabled={listMovie.length <= 1}
+                borderWidth="1"
+                borderRadius="8"
+                borderColor="#3C6255"
+                backgroundColor="#3C6255"
+                w="35px"
+                h="35px"
+                justifyContent="center"
+                alignItems="center">
+                <Icon name="chevron-right" size={20} color="white" />
+              </Pressable>
+            ) : (
+              <Pressable
+                onPress={nextPage}
+                // isDisabled={listMovie.length <= 1}
+                borderWidth="1"
+                borderRadius="8"
+                borderColor="#3C6255"
+                bgColor="#aaaa"
+                isDisabled={true}
+                w="35px"
+                h="35px"
+                justifyContent="center"
+                alignItems="center">
+                <Icon name="chevron-right" size={20} color="white" />
+              </Pressable>
+            )}
+          </HStack>
         </Stack>
         <Footer />
       </ScrollView>
