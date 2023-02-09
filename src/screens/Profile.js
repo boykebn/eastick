@@ -161,9 +161,9 @@ const Profile = () => {
             <Box shadow="9">
               {getProfile?.picture ? (
                 <Image
-                  // source={{
-                  //   uri: `https://192.168.1.9:8888/assets/uploads/${getProfile?.picture}`,
-                  // }}
+                  source={{
+                    uri: `http://192.168.1.9:8888/assets/uploads/${getProfile?.picture}`,
+                  }}
                   // source={{uri: getProfile?.picture}}
                   alt="profile"
                   width="100"

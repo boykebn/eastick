@@ -27,6 +27,7 @@ import http from '../helpers/http';
 
 // Form Validation
 const ResetPasswordSchema = Yup.object().shape({
+  code: Yup.string().required("Code is required"),
   password: Yup.string()
     .password()
     .min(8, 'Min lenght 8')

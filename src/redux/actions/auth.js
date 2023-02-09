@@ -3,7 +3,7 @@ import http from '../../helpers/http';
 
 export const loginAction = createAsyncThunk(
   'auth/loginAsync',
-  async ({value}) => {
+  async ({value}, {rejectWithValue}) => {
     try {
       const form = {
         email: value.email,
@@ -11,15 +11,19 @@ export const loginAction = createAsyncThunk(
       };
       const {data} = await http().post('/auth/login', form);
       return data;
-    } catch (err) {
-      throw err.response.data.message;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   },
 );
 
 export const registerAction = createAsyncThunk(
   'auth/registerAsync',
-  async ({value}) => {
+  async ({value}, {rejectWithValue}) => {
     try {
       const form = {
         firstName: value.firstName,
@@ -30,8 +34,12 @@ export const registerAction = createAsyncThunk(
       };
       const {data} = await http().post('/auth/register', form);
       return data;
-    } catch (err) {
-      throw err.response.data.message;
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   },
 );
