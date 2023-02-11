@@ -19,7 +19,7 @@ YupPasword(Yup);
 import Icon from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {loginAction} from '../redux/actions/auth';
+import {loginAction as handleLogin} from '../redux/actions/auth';
 
 // Validation Schema
 const LoginSchema = Yup.object().shape({
@@ -41,12 +41,12 @@ const Login = () => {
   const message = useSelector(state => state?.auth?.message);
   const isLoading = useSelector(state => state.auth.isLoading);
 
-  console.log(message);
+  // console.log(process.env.BASE_URL_BACKEND);
 
   const dispatch = useDispatch();
 
-  const LoginHandle = value => {
-    dispatch(loginAction({value}));
+  const LoginHandle = async value => {
+    dispatch(handleLogin({value}));
   };
 
   return (
@@ -160,7 +160,8 @@ const Login = () => {
                 bg="#3C6255"
                 _pressed={{bg: '#A6BB8D'}}
                 onPress={handleSubmit}
-                isLoading={!isLoading}>
+                // isLoading={!isLoading}
+              >
                 Sign In
               </Button>
 

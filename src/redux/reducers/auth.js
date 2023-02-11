@@ -3,7 +3,7 @@ import {loginAction, registerAction} from '../actions/auth';
 
 const initialState = {
   token: null,
-  isLoading: true,
+  isLoading: false,
   message: '',
 };
 
@@ -26,10 +26,10 @@ const authReducer = createSlice({
 
     build.addCase(loginAction.fulfilled, (state, {payload}) => {
       console.log('masuk');
-      state.token = payload.results.token;
+      state.token = payload.token;
       state.isLoading = true;
       state.message = payload.message;
-      console.log(state.message);
+      // console.log(state.message);
     });
 
     build.addCase(loginAction.rejected, (state, action) => {

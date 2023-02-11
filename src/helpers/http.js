@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {BASE_URL_BACKEND} from '@env';
 
 const http = token => {
   const headers = {};
@@ -6,8 +7,8 @@ const http = token => {
     headers.Authorization = 'Bearer ' + token;
   }
   const instance = axios.create({
-    baseURL: 'http://192.168.1.9:8888',
-    // baseURL: 'https://fw12-backend-dg3ymnqvv-boykebn.vercel.app',
+    baseURL: BASE_URL_BACKEND,
+    // baseURL: 'https://fw12-backend-ungs.vercel.app',
     headers,
   });
   return instance;

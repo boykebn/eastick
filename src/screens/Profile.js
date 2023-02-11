@@ -13,7 +13,9 @@ import {
   Stack,
 } from 'native-base';
 import React, {Component} from 'react';
-import {Eye, EyeOff} from 'react-native-feather';
+import {Eye, EyeOff, Edit} from 'react-native-feather';
+// import {Edit2} from 'react-native-feather';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import YupPassword from 'yup-password';
@@ -124,6 +126,67 @@ const Profile = () => {
       console.log(error);
     }
   };
+
+  //OPEN GALERY
+  const [toggle, setToggle] = React.useState(false);
+  const [preview, setPreview] = React.useState({});
+  const openGallery = async () => {
+    const result = await launchImageLibrary();
+    const ObjImage = result.assets[0];
+    setPreview(ObjImage);
+    // console.log(preview);
+  };
+  //OPEN CAMERA
+  const openCamera = async () => {
+    const result = await launchCamera();
+    const ObjImage = result.assets[0];
+    setPreview(ObjImage);
+  };
+  //HANDLE UPLOAD
+  const [messageUpload, setMessageUpload] = React.useState(false);
+  const [messageErrorFileSize, setMessageErrorFileSize] = React.useState(false);
+  const [loadingUpload, setLoadingUpload] = React.useState(false);
+  const [spinnerLoadingUpload, setSpinnerLoadingUpload] = React.useState(false);
+  const uploadImage = async () => {
+    try {
+      if (preview?.fileName) {
+        if (preview?.fileSize <= 2000000) {
+          setLoadingUpload('Uploading...');
+          setSpinnerLoadingUpload(true);
+          const obj = {
+            name: preview.fileName,
+            type: preview.type,
+            uri: preview.uri,
+          };
+          const form = new FormData();
+          form.append('picture', obj);
+          const {data} = await http(token).patch('/profile/updated', form, {
+            headers: {
+              'Content-type': 'multipart/form-data',
+            },
+          });
+          setLoadingUpload(false);
+          setSpinnerLoadingUpload(false);
+          setMessageUpload(data.message);
+          setTimeout(() => {
+            setMessageUpload(false);
+            getDataProfile();
+            setPreview({});
+            setToggle(false);
+          }, 3000);
+        } else {
+          setMessageErrorFileSize('Maximum file size 2MB');
+          setTimeout(() => {
+            setMessageErrorFileSize(false);
+          }, 3000);
+        }
+      } else {
+        alert('Please choose image first');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true}>
       <Navbar />
@@ -161,10 +224,7 @@ const Profile = () => {
             <Box shadow="9">
               {getProfile?.picture ? (
                 <Image
-                  source={{
-                    uri: `http://192.168.1.9:8888/assets/uploads/${getProfile?.picture}`,
-                  }}
-                  // source={{uri: getProfile?.picture}}
+                  source={{uri: getProfile?.picture}}
                   alt="profile"
                   width="100"
                   height="100"
@@ -181,7 +241,74 @@ const Profile = () => {
                   shadow="9"
                 />
               )}
+              <Pressable
+                onPress={() => setToggle(!toggle)}
+                left="90"
+                position="absolute"
+                bottom="0">
+                <Edit color="black" />
+              </Pressable>
             </Box>
+
+            {preview.uri && (
+              <Image
+                source={{uri: preview.uri}}
+                alt="profile"
+                width="100"
+                height="100"
+                borderRadius="full"
+              />
+            )}
+
+            {toggle && (
+              <VStack space="3">
+                <HStack space="3">
+                  <Button
+                    onPress={openGallery}
+                    borderRadius="10"
+                    bgColor="#A6BB8D"
+                    isDisabled={spinnerLoadingUpload}>
+                    <Text fontSize="md" fontWeight="bold" color="white">
+                      Open Gallery
+                    </Text>
+                  </Button>
+                  <Button
+                    onPress={openCamera}
+                    borderRadius="10"
+                    bgColor="#A6BB8D"
+                    isDisabled={spinnerLoadingUpload}>
+                    <Text fontSize="md" fontWeight="bold" color="white">
+                      Open Camera
+                    </Text>
+                  </Button>
+                </HStack>
+                <Button
+                  onPress={uploadImage}
+                  borderRadius="10"
+                  bgColor="#A6BB8D"
+                  isLoading={spinnerLoadingUpload}>
+                  <Text fontSize="md" fontWeight="bold" color="white">
+                    Upload
+                  </Text>
+                </Button>
+              </VStack>
+            )}
+            {loadingUpload && (
+              <Text fontSize="lg" fontWeight="bold" color="blue.500">
+                {loadingUpload}
+              </Text>
+            )}
+            {messageUpload && (
+              <Text fontSize="lg" fontWeight="bold" color="green.500">
+                {messageUpload}
+              </Text>
+            )}
+            {messageErrorFileSize && (
+              <Text fontSize="lg" fontWeight="bold" color="red.500">
+                {messageErrorFileSize}
+              </Text>
+            )}
+
             <Text fontSize="xl" fontWeight="bold">
               {getProfile?.firstName} {getProfile?.lastName}
             </Text>

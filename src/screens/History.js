@@ -7,15 +7,31 @@ import {
   Box,
   Button,
   ScrollView,
+  Pressable,
 } from 'native-base';
 import React, {Component} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+
 import Navbar from '../components/NavbarUser';
 import Footer from '../components/Footer';
-import {useNavigation} from '@react-navigation/native';
-import {Pressable} from 'react-native';
 
 const History = () => {
   const navigation = useNavigation();
+
+  const bookingDate = useSelector(state => state?.transaction.bookingDate);
+  const movieTitle = useSelector(state => state.transaction.movieTitle);
+  const cinemaPicture = useSelector(state => state.transaction.cinemaPicture);
+  const time = useSelector(state => state.transaction.time);
+
+  //set date
+  const date = moment(bookingDate).format('LLLL').split(' ');
+  const day = date[0];
+  const month = date[1];
+  const newDate = date[2];
+  const year = date[3];
+  const fixDate = `${day} ${month} ${newDate} ${year}`;
   return (
     <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={false}>
       <Navbar />
@@ -46,14 +62,17 @@ const History = () => {
         <VStack bg="white" borderRadius="10" space="3" py="6">
           <VStack px="6" space="3">
             <Image
-              source={require('../assets/images/cineone21.png')}
+              source={{uri: cinemaPicture}}
+              width="200px"
+              height="50px"
+              resizeMode="contain"
               alt="ticket"
             />
             <Text fontSize="lg" color="#AAAAAA">
-              Tuesday, 07 July 2020 - 04:30pm
+              {fixDate} - {time} WIB
             </Text>
             <Text fontSize="2xl" fontWeight="bold">
-              Spider-Man: Homecoming
+              {movieTitle}
             </Text>
           </VStack>
           <Box borderWidth="1" borderColor="#DEDEDE" my="3" />

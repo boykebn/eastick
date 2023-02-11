@@ -3,27 +3,27 @@ import http from '../../helpers/http';
 
 export const loginAction = createAsyncThunk(
   'auth/loginAsync',
-  async ({value}, {rejectWithValue}) => {
+  async ({value}) => {
     try {
       const form = {
         email: value.email,
         password: value.password,
       };
+      // console.log(form);
       const {data} = await http().post('/auth/login', form);
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      console.log('masuk');
+      // cb();
+      return data.results;
+    } catch (err) {
+      console.log(err);
+      throw err.response.data.message;
     }
   },
 );
 
 export const registerAction = createAsyncThunk(
   'auth/registerAsync',
-  async ({value}, {rejectWithValue}) => {
+  async ({value, cb}) => {
     try {
       const form = {
         firstName: value.firstName,
@@ -33,13 +33,10 @@ export const registerAction = createAsyncThunk(
         password: value.password,
       };
       const {data} = await http().post('/auth/register', form);
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
-      } else {
-        return rejectWithValue(error.message);
-      }
+      cb();
+      return data.results;
+    } catch (err) {
+      throw err.response.data.message;
     }
   },
 );

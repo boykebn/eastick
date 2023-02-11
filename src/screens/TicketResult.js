@@ -9,11 +9,27 @@ import {
   ScrollView,
 } from 'native-base';
 import React, {Component} from 'react';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
 
 import Navbar from '../components/NavbarUser';
 import Footer from '../components/Footer';
 
 const TicketResult = () => {
+  const bookingDate = useSelector(state => state?.transaction.bookingDate);
+  const movieTitle = useSelector(state => state.transaction.movieTitle);
+  const totalPrice = useSelector(state => state.transaction.totalPrice);
+  const time = useSelector(state => state.transaction.time);
+  const price = useSelector(state => state.transaction.price);
+  const seatNum = useSelector(state => state.transaction.seatNum);
+
+  //set date
+  const date = moment(bookingDate).format('LLLL').split(' ');
+  const day = date[0];
+  const month = date[1];
+  const newDate = date[2];
+  const year = date[3];
+  const fixDate = `${day} ${month} ${newDate} ${year}`;
   return (
     <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true}>
       <Navbar />
@@ -57,20 +73,20 @@ const TicketResult = () => {
               <VStack space="2">
                 <Text color="#AAAAAA">Movie</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  Spider-Man: ...
+                  {movieTitle}
                 </Text>
               </VStack>
               <VStack space="2">
                 <Text color="#AAAAAA">Date</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  07 Jul
+                  {fixDate}
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Count</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  3 pcs
+                  {totalPrice / price} pcs
                 </Text>
               </VStack>
             </VStack>
@@ -84,14 +100,14 @@ const TicketResult = () => {
               <VStack space="2">
                 <Text color="#AAAAAA">Time</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  02:00pm
+                  {time} WIB
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Seats</Text>
                 <Text fontSize="lg" fontWeight="bold">
-                  C4, C5, C6
+                  {seatNum}
                 </Text>
               </VStack>
             </VStack>
@@ -106,7 +122,7 @@ const TicketResult = () => {
               Total
             </Text>
             <Text fontSize="xl" fontWeight="bold">
-              $30.00
+              Rp.{totalPrice}
             </Text>
           </HStack>
         </VStack>
