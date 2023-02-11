@@ -9,9 +9,10 @@ import {
   Button,
 } from 'native-base';
 import React from 'react';
-import {ArrowDown, ArrowRight} from 'react-native-feather';
-import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {ArrowDown, ArrowRight} from 'react-native-feather';
+import PushNotification from 'react-native-push-notification';
 import moment from 'moment';
 
 import {chooseSeat} from '../redux/reducers/transaction';
@@ -68,6 +69,11 @@ const Order = () => {
             totalPrice: selectSeat.length * price,
           }),
         );
+        PushNotification.localNotification({
+          channelId: 'global_notif',
+          title: 'Success!',
+          message: 'Yeay! Your seat has been reserved',
+        });
         navigation.navigate('Payment');
       } else {
         setErrorMessage('Please choose your seat');
@@ -242,7 +248,9 @@ const Order = () => {
           fontWeight="bold"
           fontSize="3xl"
           onPress={() => handleChekOut(totalPrice)}
-          backgroundColor="#61876E">
+          backgroundColor="#61876E"
+          bg="#3C6255"
+          _pressed={{bg: '#A6BB8D'}}>
           Checkout Now
         </Button>
         {errorMessage && (

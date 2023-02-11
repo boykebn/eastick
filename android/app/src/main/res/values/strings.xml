@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">eastick</string>
+    <string name="app_name">Eastick</string>
+    <string name="default_notification_channel_id">global_notif</string>
 </resources>

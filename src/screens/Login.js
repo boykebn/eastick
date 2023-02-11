@@ -39,14 +39,30 @@ const Login = () => {
 
   const [show, setShow] = React.useState(false);
   const message = useSelector(state => state?.auth?.message);
-  const isLoading = useSelector(state => state.auth.isLoading);
+  // const isLoading = useSelector(state => state?.auth?.isLoading);
 
-  // console.log(process.env.BASE_URL_BACKEND);
+  const [succesMessage, setSuccesMessage] = React.useState(false);
+  const [failedMessage, setFailedMessage] = React.useState(false);
 
   const dispatch = useDispatch();
 
   const LoginHandle = async value => {
-    dispatch(handleLogin({value}));
+    try {
+      dispatch(handleLogin({value}));
+      if (message) {
+        setFailedMessage(message);
+        setTimeout(() => {
+          setFailedMessage(false);
+        }, 3000);
+      } else {
+        setSuccesMessage('Login Succes');
+        setTimeout(() => {
+          setSuccesMessage(false);
+        }, 2000);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -71,13 +87,27 @@ const Login = () => {
         </Stack>
       </Stack>
 
-      {message && (
+      {succesMessage ? (
         <Box my={5}>
-          <Alert status={'error'}>
-            <Text fontWeight={'bold'}>{message}</Text>
+          <Alert status={'success'}>
+            <Text fontWeight={'bold'}>{succesMessage}</Text>
+          </Alert>
+        </Box>
+      ) : (
+        <Box my={5}>
+          <Alert bg="white">
+            <Text fontWeight={'bold'}>{failedMessage}</Text>
           </Alert>
         </Box>
       )}
+
+      {/* {failedMessage && (
+        <Box my={5}>
+          <Alert status={'error'}>
+            <Text fontWeight={'bold'}>{failedMessage}</Text>
+          </Alert>
+        </Box>
+      )} */}
 
       <Formik
         initialValues={{

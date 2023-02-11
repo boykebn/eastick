@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface eastickTests : XCTestCase
+@interface EastickTests : XCTestCase
 
 @end
 
-@implementation eastickTests
+@implementation EastickTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

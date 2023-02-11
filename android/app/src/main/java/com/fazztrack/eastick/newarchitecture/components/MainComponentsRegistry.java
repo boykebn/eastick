@@ -1,4 +1,4 @@
-package com.eastick.newarchitecture.components;
+package com.fazztrack.eastick.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

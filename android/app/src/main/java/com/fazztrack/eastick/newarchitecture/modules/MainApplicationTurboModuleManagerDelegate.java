@@ -1,4 +1,4 @@
-package com.eastick.newarchitecture.modules;
+package com.fazztrack.eastick.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

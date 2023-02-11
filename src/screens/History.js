@@ -63,12 +63,12 @@ const History = () => {
           <VStack px="6" space="3">
             <Image
               source={{uri: cinemaPicture}}
-              width="200px"
+              width="50px"
               height="50px"
               resizeMode="contain"
               alt="ticket"
             />
-            <Text fontSize="lg" color="#AAAAAA">
+            <Text fontSize="sm" color="#AAAAAA">
               {fixDate} - {time} WIB
             </Text>
             <Text fontSize="2xl" fontWeight="bold">
@@ -80,7 +80,8 @@ const History = () => {
             <Button
               backgroundColor="#A6BB8D"
               borderRadius="10"
-              fontWeight="bold">
+              fontWeight="bold"
+              onPress={() => navigation.navigate('TicketResult')}>
               Ticket in active
             </Button>
           </Box>
@@ -104,7 +105,7 @@ const History = () => {
               backgroundColor="#6E7191"
               borderRadius="10"
               fontWeight="bold">
-              Ticket in active
+              Ticket Expired
             </Button>
           </Box>
         </VStack>

@@ -13,6 +13,7 @@ import React from 'react';
 import {AlertTriangle} from 'react-native-feather';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
+import PushNotification from 'react-native-push-notification';
 // import moment from 'moment';
 
 import {selectPayment} from '../redux/reducers/transaction';
@@ -131,6 +132,11 @@ const Payment = () => {
         seatNum: seatNum,
         time: time,
         totalPrice: totalPrice,
+      });
+      PushNotification.localNotification({
+        channelId: 'global_notif',
+        title: 'Success!',
+        message: 'Yeay! Your order has been succes, we wait for you!',
       });
       setSuccessMessage('Order has been succes');
       setTimeout(() => {
@@ -309,7 +315,9 @@ const Payment = () => {
           fontWeight="bold"
           fontSize="3xl"
           onPress={handlePaymentOrdered}
-          backgroundColor="#61876E">
+          backgroundColor="#61876E"
+          bg="#3C6255"
+          _pressed={{bg: '#A6BB8D'}}>
           Pay your order
         </Button>
       </VStack>

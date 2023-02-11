@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54534689221",
+    "project_id": "eastick-ac3d6",
+    "storage_bucket": "eastick-ac3d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54534689221:android:dda70f6c673b0d1a567bac",
+        "android_client_info": {
+          "package_name": "com.fazztrack.eastick"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54534689221-ctspbir57nvee3gepmkamg0q3628ufae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUQR6M-FjJjSw8dYcvsJU59VCV9Tj44jE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54534689221-ctspbir57nvee3gepmkamg0q3628ufae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

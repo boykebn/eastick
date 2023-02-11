@@ -72,20 +72,20 @@ const TicketResult = () => {
             <VStack space="5">
               <VStack space="2">
                 <Text color="#AAAAAA">Movie</Text>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="sm" fontWeight="bold">
                   {movieTitle}
                 </Text>
               </VStack>
               <VStack space="2">
                 <Text color="#AAAAAA">Date</Text>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="xs" fontWeight="bold">
                   {fixDate}
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Count</Text>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="sm" fontWeight="bold">
                   {totalPrice / price} pcs
                 </Text>
               </VStack>
@@ -93,21 +93,21 @@ const TicketResult = () => {
             <VStack space="5">
               <VStack space="2">
                 <Text color="#AAAAAA">Category</Text>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="sm" fontWeight="bold">
                   Action
                 </Text>
               </VStack>
               <VStack space="2">
                 <Text color="#AAAAAA">Time</Text>
-                <Text fontSize="lg" fontWeight="bold">
+                <Text fontSize="sm" fontWeight="bold">
                   {time} WIB
                 </Text>
               </VStack>
 
               <VStack space="2">
                 <Text color="#AAAAAA">Seats</Text>
-                <Text fontSize="lg" fontWeight="bold">
-                  {seatNum}
+                <Text fontSize="sm" fontWeight="bold">
+                  {seatNum.join(', ')}
                 </Text>
               </VStack>
             </VStack>
