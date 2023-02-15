@@ -1,7 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import {
-  View,
   Box,
   Text,
   NativeBaseProvider,

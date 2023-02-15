@@ -137,7 +137,7 @@ const MovieDetail = ({idMovie}) => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView stickyHeaderIndices={[0]} stickyHeaderHiddenOnScroll={true}>
       <Navbar />
       <VStack alignItems="center" justifyContent="center">
         <Box
@@ -172,7 +172,8 @@ const MovieDetail = ({idMovie}) => {
                 Relase date
               </Text>
               <Text fontWeight="600" flexWrap="wrap" fontSize="lg">
-                {movieId?.releaseDate}
+                {/* {new Date(movieId?.releaseDate).toDateString()} */}
+                {moment(movieId?.releaseDate).format('LL').slice(0, 28)}
               </Text>
             </VStack>
             <VStack space="2">
