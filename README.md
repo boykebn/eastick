@@ -30,3 +30,10 @@
 -   [TailwindCSS](https://tailwindcss.com/)
 -   [Redux](https://redux-toolkit.js.org/)
 -   [Formik](https://formik.org/)
+
+## Release History
+
+* 1.0.0
+    * First Release
+* 1.0.1
+    * CHANGE: fix transaction history and get data for ticket
